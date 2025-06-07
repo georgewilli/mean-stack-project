@@ -1,0 +1,115 @@
+<p-table
+  [value]="contacts"
+  dataKey="id"
+  [paginator]="true"
+  [rows]="5"
+  editMode="row"
+  [tableStyle]="{ 'min-width': '60rem' }"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  [globalFilterFields]="['name', 'phone', 'address']"
+>
+  <!-- Table Header with Filters -->
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="name" >
+        Name
+        <p-columnFilter field="name" matchMode="contains" display="menu"></p-columnFilter>
+      </th>
+      <th pSortableColumn="phone">
+        Phone
+        <p-columnFilter field="phone" matchMode="contains" display="menu"></p-columnFilter>
+      </th>
+      <th pSortableColumn="address">
+        Address
+        <p-columnFilter field="address" matchMode="contains" display="menu"></p-columnFilter>
+      </th>
+      <th><div class="flex flex-1 justify-center">Actions</div></th>
+    </tr>
+  </ng-template>
+
+  <!-- Table Body with Editable Fields -->
+  <ng-template pTemplate="body" let-contact let-editing="editing" let-ri="rowIndex">
+    <tr [pEditableRow]="contact">
+      <td >
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText [(ngModel)]="contact.name" />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ contact.name }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td >
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText [(ngModel)]="contact.phone" />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ contact.phone }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td >
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText [(ngModel)]="contact.address" />
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{ contact.address }}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <div class="flex gap-3 items-center justify-center">
+      
+        <div class="flex items-center justify-center gap-2">
+            <button
+                *ngIf="!editing"
+                pButton
+                pRipple
+                type="button"
+                pInitEditableRow
+                icon="pi pi-pencil"
+                (click)="onEditInit(contact)"
+                text
+                rounded
+                severity="secondary"
+            ></button>
+            <button
+                *ngIf="editing"
+                pButton
+                pRipple
+                type="button"
+                pSaveEditableRow
+                icon="pi pi-check"
+                (click)="onEditSave(contact)"
+                text
+                rounded
+                severity="secondary"
+            ></button>
+            <button
+                *ngIf="editing"
+                pButton
+                pRipple
+                type="button"
+                pCancelEditableRow
+                icon="pi pi-times"
+                (click)="onEditCancel(contact, ri)"
+                text
+                rounded
+                severity="secondary"
+            ></button>
+        </div>  <button
+        pButton
+        icon="pi pi-trash"
+        class="p-button-danger"
+        (click)="confirmDelete(contact)"
+      ></button></div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-confirmDialog></p-confirmDialog>

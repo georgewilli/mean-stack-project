@@ -1,0 +1,136 @@
+<div class="max-w-2xl mx-auto p-6 bg-gray-50 min-h-screen">
+  
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+  
+    <!-- Form Container -->
+    <form *ngIf="!isLoading" 
+          [formGroup]="contactForm" 
+          (ngSubmit)="onSubmit()" 
+          class="bg-white shadow-xl rounded-2xl p-8 space-y-8 border border-gray-100">
+      
+      <!-- Breadcrumb Navigation -->
+      <div class="flex items-center text-sm text-gray-600 mb-4">
+        <a routerLink="/contacts" 
+           class="hover:text-blue-600 transition-colors cursor-pointer">
+          <mat-icon class="text-sm mr-1">home</mat-icon>
+          Contacts
+        </a>
+        <mat-icon class="mx-2 text-gray-400">chevron_right</mat-icon>
+        <span class="text-gray-900 font-medium">{{ pageTitle }}</span>
+      </div>
+  
+      <!-- Form Header -->
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ pageTitle }}</h2>
+        <p class="text-gray-600">
+          {{ isEditMode ? 'Update the contact information below' : 'Please fill in the contact details below' }}
+        </p>
+      </div>
+  
+      <!-- Form Fields Container -->
+      <div class="space-y-6">
+        
+        <!-- Name Field -->
+        <mat-form-field appearance="fill" class="w-full mat-form-field-clean">
+          <mat-label>Full Name *</mat-label>
+          <input matInput 
+                 formControlName="name" 
+                 placeholder="Enter full name"
+                 [class.mat-input-invalid]="hasError('name', 'required')"
+                 class="!border-0 !outline-0">
+          <mat-icon matSuffix class="text-gray-400">person</mat-icon>
+          <mat-error *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
+            {{ getErrorMessage('name') }}
+          </mat-error>
+        </mat-form-field>
+  
+        <!-- Phone Field -->
+        <mat-form-field appearance="fill" class="w-full mat-form-field-clean">
+          <mat-label>Phone Number *</mat-label>
+          <input matInput 
+                 formControlName="phone" 
+                 placeholder="Enter phone number"
+                 type="tel"
+                 [class.mat-input-invalid]="hasError('phone', 'required') || hasError('phone', 'pattern')"
+                 class="!border-0 !outline-0">
+          <mat-icon matSuffix class="text-gray-400">phone</mat-icon>
+          <mat-error *ngIf="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched">
+            {{ getErrorMessage('phone') }}
+          </mat-error>
+        </mat-form-field>
+  
+        <!-- Address Field -->
+        <mat-form-field appearance="fill" class="w-full mat-form-field-clean">
+          <mat-label>Address *</mat-label>
+          <textarea matInput 
+                    formControlName="address" 
+                    placeholder="Enter complete address"
+                    rows="3"
+                    [class.mat-input-invalid]="hasError('address', 'required') || hasError('address', 'minlength')"
+                    class="!border-0 !outline-0 resize-none"></textarea>
+          <mat-icon matSuffix class="text-gray-400">location_on</mat-icon>
+          <mat-error *ngIf="contactForm.get('address')?.invalid && contactForm.get('address')?.touched">
+            {{ getErrorMessage('address') }}
+          </mat-error>
+        </mat-form-field>
+  
+        <!-- Notes Field -->
+        <mat-form-field appearance="fill" class="w-full mat-form-field-clean">
+          <mat-label>Additional Notes</mat-label>
+          <textarea matInput 
+                    formControlName="notes" 
+                    placeholder="Any additional information or notes (optional)"
+                    rows="4"
+                    [class.mat-input-invalid]="hasError('notes', 'maxlength')"
+                    class="!border-0 !outline-0 resize-none"></textarea>
+          <mat-icon matSuffix class="text-gray-400">note</mat-icon>
+          <mat-hint class="text-gray-500">Optional field for any additional details</mat-hint>
+          <mat-error *ngIf="contactForm.get('notes')?.invalid && contactForm.get('notes')?.touched">
+            {{ getErrorMessage('notes') }}
+          </mat-error>
+        </mat-form-field>
+  
+      </div>
+  
+      <!-- Form Actions -->
+      <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
+        <button mat-raised-button 
+                color="primary" 
+                type="submit" 
+                [disabled]="!isFormValid || isSaving"
+                class="flex-1 h-12 text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 disabled:transform-none disabled:shadow-md">
+          <mat-spinner *ngIf="isSaving" diameter="20" class="mr-2"></mat-spinner>
+          <mat-icon *ngIf="!isSaving" class="mr-2">{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+          {{ submitButtonText }}
+        </button>
+        
+        <button mat-stroked-button 
+                type="button" 
+                (click)="onCancel()"
+                [disabled]="isSaving"
+                class="flex-1 h-12 text-base font-medium rounded-lg border-2 hover:bg-gray-50 transition-colors duration-200 disabled:opacity-50">
+          <mat-icon class="mr-2">cancel</mat-icon>
+          Cancel
+        </button>
+      </div>
+  
+      <!-- Form Status Indicator -->
+      <div class="text-center pt-4" *ngIf="!isFormValid && contactForm.touched">
+        <p class="text-red-600 text-sm font-medium flex items-center justify-center">
+          <mat-icon class="mr-1 text-base">error_outline</mat-icon>
+          Please fix the errors above before submitting
+        </p>
+      </div>
+  
+      <!-- Required Fields Note -->
+      <div class="text-center pt-2">
+        <p class="text-gray-500 text-sm">
+          Fields marked with * are required
+        </p>
+      </div>
+  
+    </form>
+  </div>
