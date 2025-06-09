@@ -21,7 +21,7 @@ export class CreateContactComponent {
   isEditMode: boolean = false;
   isLoading: boolean = false;
   isSaving: boolean = false;
-  contactId: number | null = null;
+  contactId: string =  '';
   pageTitle: string = 'Add New Contact';
   
   private destroy$ = new Subject<void>();
@@ -47,7 +47,7 @@ export class CreateContactComponent {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
       if (params['id']) {
         this.isEditMode = true;
-        this.contactId = +params['id'];
+        this.contactId = params['_id'];
         this.pageTitle = 'Edit Contact';
         this.loadContact(this.contactId);
       }
@@ -66,7 +66,7 @@ export class CreateContactComponent {
     this.destroy$.complete();
   }
 
-  private loadContact(id: number): void {
+  private loadContact(id: string): void {
     this.isLoading = true;
     
     this.contactService.getContactById(id)

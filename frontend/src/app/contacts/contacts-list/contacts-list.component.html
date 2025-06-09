@@ -1,60 +1,77 @@
-<p-table
+<div class="mb-6 flex justify-end">
+  <button
+    pButton
+    pRipple
+    type="button"
+    label="Add Contact"
+    icon="pi pi-plus"
+    class="p-button-success shadow-md rounded-md"
+    (click)="navigateToContactForm()"
+  ></button>
+</div>
+<div class="max-w-7xl mx-auto pb-10 px-4">
+
+<p-table 
+  class="shadow-md rounded-lg"
   [value]="contacts"
-  dataKey="id"
+  [lazy]="true"
+  (onLazyLoad)="onTableLazyLoad($event)"
   [paginator]="true"
-  [rows]="5"
+  dataKey="_id"
   editMode="row"
-  [tableStyle]="{ 'min-width': '60rem' }"
-  [showCurrentPageReport]="true"
-  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-  [globalFilterFields]="['name', 'phone', 'address']"
+  [rows]="pageSize"
+  [totalRecords]="totalRecords"
+  [loading]="loading"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  [first]="(currentPage - 1) * pageSize"
 >
-  <!-- Table Header with Filters -->
+
+  <!-- Header -->
   <ng-template pTemplate="header">
     <tr>
-      <th pSortableColumn="name" >
+      <th pSortableColumn="name" class="whitespace-nowrap">
         Name
-        <p-columnFilter field="name" matchMode="contains" display="menu"></p-columnFilter>
+        <p-columnFilter type="text" field="name"  display="menu"></p-columnFilter>
       </th>
-      <th pSortableColumn="phone">
+      <th pSortableColumn="phone" class="whitespace-nowrap">
         Phone
-        <p-columnFilter field="phone" matchMode="contains" display="menu"></p-columnFilter>
+        <p-columnFilter field="phone"  display="menu"></p-columnFilter>
       </th>
-      <th pSortableColumn="address">
+      <th pSortableColumn="address" class="whitespace-nowrap">
         Address
-        <p-columnFilter field="address" matchMode="contains" display="menu"></p-columnFilter>
+        <p-columnFilter type="text" field="address"  display="menu"></p-columnFilter>
       </th>
-      <th><div class="flex flex-1 justify-center">Actions</div></th>
+      <th class="text-center">Actions</th>
     </tr>
   </ng-template>
 
-  <!-- Table Body with Editable Fields -->
-  <ng-template pTemplate="body" let-contact let-editing="editing" let-ri="rowIndex">
+  <!-- Body -->
+  <ng-template pTemplate="body" let-contact let-editing="editing">
     <tr [pEditableRow]="contact">
-      <td >
+      <td>
         <p-cellEditor>
           <ng-template pTemplate="input">
-            <input pInputText [(ngModel)]="contact.name" />
+            <input pInputText [(ngModel)]="contact.name" class="w-full" />
           </ng-template>
           <ng-template pTemplate="output">
             {{ contact.name }}
           </ng-template>
         </p-cellEditor>
       </td>
-      <td >
+      <td>
         <p-cellEditor>
           <ng-template pTemplate="input">
-            <input pInputText [(ngModel)]="contact.phone" />
+            <input pInputText [(ngModel)]="contact.phone" class="w-full" />
           </ng-template>
           <ng-template pTemplate="output">
             {{ contact.phone }}
           </ng-template>
         </p-cellEditor>
       </td>
-      <td >
+      <td>
         <p-cellEditor>
           <ng-template pTemplate="input">
-            <input pInputText [(ngModel)]="contact.address" />
+            <input pInputText [(ngModel)]="contact.address" class="w-full" />
           </ng-template>
           <ng-template pTemplate="output">
             {{ contact.address }}
@@ -62,54 +79,55 @@
         </p-cellEditor>
       </td>
       <td>
-        <div class="flex gap-3 items-center justify-center">
-      
-        <div class="flex items-center justify-center gap-2">
+        <div class="flex justify-center gap-2">
+          <!-- Edit Buttons -->
+          <ng-container *ngIf="!editing">
             <button
-                *ngIf="!editing"
-                pButton
-                pRipple
-                type="button"
-                pInitEditableRow
-                icon="pi pi-pencil"
-                (click)="onEditInit(contact)"
-                text
-                rounded
-                severity="secondary"
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-pencil"
+              pInitEditableRow
+              class="p-button-rounded p-button-text p-button-secondary"
+              (click)="onEditInit(contact)"
+              [disabled]="lockedContacts[contact._id] && lockedContacts[contact._id] !== userName"
+              [pTooltip]="lockedContacts[contact._id] && lockedContacts[contact._id] !== userName ? 'This Contact is under editing by another user' : ''"
+            ></button>
+          </ng-container>
+          <ng-container *ngIf="editing">
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-check"
+              pSaveEditableRow
+              class="p-button-rounded p-button-text p-button-success"
+              (click)="onEditSave(contact)"
             ></button>
             <button
-                *ngIf="editing"
-                pButton
-                pRipple
-                type="button"
-                pSaveEditableRow
-                icon="pi pi-check"
-                (click)="onEditSave(contact)"
-                text
-                rounded
-                severity="secondary"
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-times"
+              pCancelEditableRow
+              class="p-button-rounded p-button-text p-button-secondary"
+              (click)="onEditCancel(contact)"
             ></button>
-            <button
-                *ngIf="editing"
-                pButton
-                pRipple
-                type="button"
-                pCancelEditableRow
-                icon="pi pi-times"
-                (click)="onEditCancel(contact, ri)"
-                text
-                rounded
-                severity="secondary"
-            ></button>
-        </div>  <button
-        pButton
-        icon="pi pi-trash"
-        class="p-button-danger"
-        (click)="confirmDelete(contact)"
-      ></button></div>
+          </ng-container>
+
+          <!-- Delete Button -->
+          <button
+            pButton
+            pRipple
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger p-button-text"
+            (click)="confirmDelete(contact._id)"
+          ></button>
+        </div>
       </td>
     </tr>
   </ng-template>
 </p-table>
+</div>
 
 <p-confirmDialog></p-confirmDialog>

@@ -1,4 +1,4 @@
-<div class="max-w-2xl mx-auto p-6 bg-gray-50 min-h-screen">
+<div class="max-w-2xl mx-auto  min-h-screen">
   
     <!-- Loading State -->
     <div *ngIf="isLoading" class="flex justify-center items-center h-64">
@@ -9,19 +9,8 @@
     <form *ngIf="!isLoading" 
           [formGroup]="contactForm" 
           (ngSubmit)="onSubmit()" 
-          class="bg-white shadow-xl rounded-2xl p-8 space-y-8 border border-gray-100">
+          class="bg-slate-300 shadow-xl rounded-2xl p-8 space-y-8 border border-gray-100">
       
-      <!-- Breadcrumb Navigation -->
-      <div class="flex items-center text-sm text-gray-600 mb-4">
-        <a routerLink="/contacts" 
-           class="hover:text-blue-600 transition-colors cursor-pointer">
-          <mat-icon class="text-sm mr-1">home</mat-icon>
-          Contacts
-        </a>
-        <mat-icon class="mx-2 text-gray-400">chevron_right</mat-icon>
-        <span class="text-gray-900 font-medium">{{ pageTitle }}</span>
-      </div>
-  
       <!-- Form Header -->
       <div class="text-center mb-8">
         <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ pageTitle }}</h2>
