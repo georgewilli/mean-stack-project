@@ -54,3 +54,10 @@ cd backend
 npm install
 npm run seed:users
 npm run dev
+
+### 🔧 Frontend (Angular)
+
+```bash
+cd frontend
+npm install
+ng serve
