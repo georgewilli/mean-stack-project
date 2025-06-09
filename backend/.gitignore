@@ -1,0 +1,46 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# dotenv environment variables
+.env
+
+# Logs
+logs/
+*.log
+log*.txt
+
+# Coverage directories
+coverage/
+.nyc_output/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDEs & editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Dependency lock files (optional - if using only npm or yarn, not both)
+# yarn.lock
+# package-lock.json
+
+# Build outputs (if any)
+dist/
+build/
+
+# MongoDB
+dump/
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+
+# Optional: socket.io dev logs
+*.pid
