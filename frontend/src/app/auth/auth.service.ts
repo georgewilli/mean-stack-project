@@ -6,7 +6,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 export interface User {
   _id: string;
   username: string;
-  role?: string;
+  role: string;
 }
 
 export interface LoginResponse {

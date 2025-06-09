@@ -83,7 +83,7 @@ router.put('/:id', verifyToken, async (req, res) => {
 });
 
 // DELETE a contact (admin only)
-router.delete('/:id', verifyToken, requireRole('admin'), async (req, res) => {
+router.delete('/:id', verifyToken, async (req, res) => {
   try {
     const deletedContact = await Contact.deleteOne({ _id: req.params.id });
     res.status(200).json(deletedContact);

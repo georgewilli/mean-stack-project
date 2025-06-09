@@ -7,6 +7,8 @@ const socketIo = require('socket.io');
 const http = require('http');
 const server = http.createServer(app);
 const lockedContacts = new Map();
+const dotenv = require('dotenv');
+dotenv.config();
 
 const io = socketIo(server, {
     cors: {
@@ -14,9 +16,7 @@ const io = socketIo(server, {
       methods: ["GET", "POST", "PUT", "DELETE"]
     }
   });
-const dotenv = require('dotenv');
 
-dotenv.config();
 
 // Socket.io connection handling
 io.on('connection', (socket) => {

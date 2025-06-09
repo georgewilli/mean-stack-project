@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     // Redirect to home if already logged in
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/contacts']);
       return;
     }
 
@@ -70,7 +70,14 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-
+ 
+  autofillUser(username: 'user1' | 'user2'): void {
+    this.loginForm.patchValue({
+      username: username,
+      password: username
+    });
+  }
+  
   private markFormGroupTouched(): void {
     Object.keys(this.loginForm.controls).forEach(key => {
       const control = this.loginForm.get(key);

@@ -9,7 +9,7 @@ const userSchema  = new mongoose.Schema({
         type: String,
         required: true
     },
-    role: String,
+    role: {type: String, required: true , enum: ['admin', 'user']},
     createdAt: { 
         type: Date, 
         default: Date.now   

@@ -4,6 +4,7 @@ import { ContactsListComponent } from './contacts/contacts-list/contacts-list.co
 import { CreateContactComponent } from './contacts/create-contact/create-contact.component';
 import { AuthGuard } from './auth/auth.guard';
 import { LoginComponent } from './auth/login/login.component';
+import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 
 export const routes: Routes = [
   { 
@@ -21,12 +22,13 @@ export const routes: Routes = [
     path: 'contacts/add', 
     canActivate: [AuthGuard] ,
     component: CreateContactComponent,
-    data: { title: 'Add New Contact', mode: 'add' }
+    data: { title: 'Add New Contact', mode: 'add' , roles: ['admin'] }
   },
+
   { 
-    path: 'contacts/edit/:id', 
-    component: CreateContactComponent,
-    data: { title: 'Edit Contact', mode: 'edit' }
+    path: 'unauthorized', 
+    component: UnauthorizedComponent,
+    data: { title: 'unauthorized' }
   },
   { 
     path: 'login', 

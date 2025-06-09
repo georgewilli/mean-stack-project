@@ -1,49 +1,69 @@
-<div class="login-container">
-    <div class="login-card">
-      <h2>Login</h2>
-      
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="username">Username</label>
+<div class="min-h-screen flex items-center justify-center bg-neutral-900 text-white px-4">
+    <div class="w-full max-w-md bg-neutral-800 shadow-lg rounded-lg p-6 space-y-6">
+      <h2 class="text-2xl font-bold font-sans text-center text-green-600">Login</h2>
+  
+      <!-- Autofill Buttons -->
+      <div class="flex justify-center gap-3">
+        <button
+          type="button"
+          class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg shadow transition"
+          (click)="autofillUser('user1')"
+        >
+          Autofill User 1
+        </button>
+        <button
+          type="button"
+          class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg shadow transition"
+          (click)="autofillUser('user2')"
+        >
+          Autofill User 2
+        </button>
+      </div>
+  
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+        <!-- Username -->
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-300">Username</label>
           <input
             type="text"
             id="username"
             formControlName="username"
-            class="form-control"
-            [class.is-invalid]="f['username'].invalid && f['username'].touched"
+            class="w-full mt-1 px-3 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
             placeholder="Enter your username"
           />
-          <div *ngIf="f['username'].invalid && f['username'].touched" class="invalid-feedback">
+          <div *ngIf="f['username'].invalid && f['username'].touched" class="text-red-400 text-sm mt-1">
             <div *ngIf="f['username'].errors?.['required']">Username is required</div>
           </div>
         </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
+  
+        <!-- Password -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
           <input
             type="password"
             id="password"
             formControlName="password"
-            class="form-control"
-            [class.is-invalid]="f['password'].invalid && f['password'].touched"
+            class="w-full mt-1 px-3 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
             placeholder="Enter your password"
           />
-          <div *ngIf="f['password'].invalid && f['password'].touched" class="invalid-feedback">
+          <div *ngIf="f['password'].invalid && f['password'].touched" class="text-red-400 text-sm mt-1">
             <div *ngIf="f['password'].errors?.['required']">Password is required</div>
-            <div *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</div>
+            <div *ngIf="f['password'].errors?.['minlength']">Minimum 6 characters</div>
           </div>
         </div>
-
-        <div *ngIf="errorMessage" class="alert alert-danger">
+  
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="bg-red-500 text-white text-sm p-2 rounded-lg">
           {{ errorMessage }}
         </div>
-
+  
+        <!-- Submit Button -->
         <button
           type="submit"
-          class="btn btn-primary btn-block"
+          class="w-full py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg shadow transition disabled:opacity-50"
           [disabled]="isLoading"
         >
-          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status"></span>
+          <span *ngIf="isLoading" class="animate-spin mr-2 inline-block border-t-2 border-white border-solid rounded-full h-4 w-4"></span>
           {{ isLoading ? 'Logging in...' : 'Login' }}
         </button>
       </form>
