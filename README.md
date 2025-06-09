@@ -54,6 +54,7 @@ cd backend
 npm install
 npm run seed:users
 npm run dev
+```
 
 ### 🔧 Frontend (Angular)
 
@@ -61,3 +62,4 @@ npm run dev
 cd frontend
 npm install
 ng serve
+```
