@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build: ./backend
+    container_name: contact_api
+    restart: always
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongo
+    environment:
+      - CONNECTION_STRING=mongodb://mongo:27017/contactsdb
+      - JWT_SECRET=your_jwt_secret
+
+  frontend:
+    build: ./frontend
+    container_name: contact_ui
+    restart: always
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
