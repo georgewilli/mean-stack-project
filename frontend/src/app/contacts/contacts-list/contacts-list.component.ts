@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, viewChild, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Contact, ContactService } from '../contact.service';
-import { Table, TableModule } from 'primeng/table';
+import {  TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -37,11 +37,8 @@ import { InputIconModule } from 'primeng/inputicon';
   templateUrl: './contacts-list.component.html',
   styleUrls: ['./contacts-list.component.scss'],
 })
-export class ContactsListComponent implements OnInit, OnDestroy {
-  @ViewChild('dt1') dt: Table | undefined;
-    
+export class ContactsListComponent implements OnInit, OnDestroy {    
   
-
   contacts: Contact[] = [];
   loading = false;
   totalRecords = 0;
@@ -136,6 +133,7 @@ export class ContactsListComponent implements OnInit, OnDestroy {
   onTableLazyLoad(event: any): void {
     const page = Math.floor(event.first / event.rows) + 1;
     const rows = event.rows;
+  
 
     // Always fetch even if page hasn't changed — because filters might have changed
     this.loadContacts(page, rows);
